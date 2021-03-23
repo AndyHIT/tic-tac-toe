@@ -1,23 +1,34 @@
-import logo from './logo.svg';
-import './App.css';
+import { useState } from 'react';
+import './App.scss';
+import Board from './components/board';
 
-function App() {
+const App = () => {
+  const initialSquares = Array(9).fill(null);
+
+  const winningCombination = [
+    [0, 1, 2],
+    [0, 3, 6],
+    [0, 4, 8],
+    [1, 4, 7],
+    [2, 5, 8],
+    [2, 5, 7],
+    [3, 4, 5],
+    [6, 7, 8]
+  ]
+
+  const [squares, setSquares] = useState(initialSquares);
+  const [nextPlayer, setNextPlayer] = useState('X');
+
+  const onClick = (i) => {
+    const nextPlayerState = nextPlayer === 'X' ? 'O' : 'X'
+    setNextPlayer(nextPlayerState);
+    setSquares([...squares.slice(0, i), nextPlayer, ...squares.slice(i+1, 9)]);
+  }
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <div className='players-turn'>Next player: {nextPlayer}</div>
+      <Board squares={squares} onClick={i => onClick(i)} />
     </div>
   );
 }
