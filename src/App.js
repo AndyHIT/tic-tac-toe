@@ -13,6 +13,9 @@ const App = () => {
     if (claimWinner()) {
       setWinner(claimWinner());
     }
+    if (!squares.includes(null) && winner === null) {
+      setWinner('draw');
+    }
   }, [squares, winner]);
   
   const claimWinner = () => {
@@ -45,6 +48,11 @@ const App = () => {
     };
   }
 
+  const resetGame = () => {
+    setSquares(initialSquares);
+    setNextPlayer('X');
+  }
+
   return (
     <div className="App">
       {!winner ? (<div className='players-turn'>Next player: {nextPlayer}</div>)
@@ -52,6 +60,9 @@ const App = () => {
           : (<div className='players-turn'>Winner is: {winner}</div>))
       }
       <Board squares={squares} onClick={i => onClick(i)} />
+      <div className='play-function-button'>
+        <button onClick={resetGame}>RESTART</button>
+      </div>
     </div>
   );
 }
